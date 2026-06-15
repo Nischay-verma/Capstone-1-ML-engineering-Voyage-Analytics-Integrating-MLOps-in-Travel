@@ -157,52 +157,6 @@ Before running the project, ensure the following software is installed:
 
 ---
 
-## Installation
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/voyage-analytics.git
-cd voyage-analytics
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Run MLflow
-
-```bash
-mlflow ui
-```
-
-### Launch Streamlit Application
-
-```bash
-streamlit run app.py
-```
-
-### Run with Docker
-
-```bash
-docker build -t voyage-analytics .
-docker run -p 8501:8501 voyage-analytics
-```
-
----
-
-## Future Enhancements
-
-* Real-time flight fare monitoring.
-* Advanced recommendation algorithms.
-* Model monitoring and drift detection.
-* Cloud deployment using AWS, Azure, or GCP.
-* CI/CD integration for automated deployment pipelines.
-
----
-
 ## Conclusion
 
 Voyage Analytics demonstrates how machine learning and MLOps can be integrated to solve real-world challenges in the travel industry. By combining predictive analytics, recommendation systems, experiment tracking, and deployment technologies, the project delivers an end-to-end intelligent travel solution that enhances user experience and supports data-driven decision-making.
