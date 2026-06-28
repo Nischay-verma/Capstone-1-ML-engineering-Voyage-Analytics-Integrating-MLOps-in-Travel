@@ -13,9 +13,12 @@ with DAG(
 
     # Task to pull the latest code from GitHub
     clone_repo = BashOperator(
-        task_id="clone_git_repo",
-        bash_command="git clone https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git /tmp/repo"
-    )
+    task_id="clone_git_repo",
+    bash_command="""
+    rm -rf /tmp/repo &&
+    git clone https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git /tmp/repo
+    """
+)
 
     # Install dependencies and preprocess data
     data_preprocessing = BashOperator(
