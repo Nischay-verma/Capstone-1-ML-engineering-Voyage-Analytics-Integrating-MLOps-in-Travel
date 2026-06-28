@@ -11,28 +11,23 @@ pipeline {
         }
 
         stage('Install Dependencies & Preprocess Data') {
-            steps {
-                sh '''
-                python3 -m venv venv
-                . venv/bin/activate
+    steps {
+        sh '''
+        python3 -m pip install --break-system-packages --upgrade pip
+        python3 -m pip install --break-system-packages -r requirements.txt
 
-                python -m pip install --upgrade pip
-                python -m pip install -r requirements.txt
-
-                python data_preprocessing.py
-                '''
-            }
-        }
+        python3 data_preprocessing.py
+        '''
+    }
+}
 
         stage('Train Model') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                python flight_model_training.py
-                '''
-            }
-        }
+    steps {
+        sh '''
+        python3 flight_model_training.py
+        '''
     }
+}
 
     post {
         success {
