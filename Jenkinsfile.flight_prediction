@@ -16,27 +16,27 @@ pipeline {
         }
 
         stage('Install Dependencies & Preprocess Data') {
-            steps {
-                sh '''
-                python3 -m venv venv || true
-                . venv/bin/activate || true
+    steps {
+        sh '''
+        python3 -m venv venv
+        . venv/bin/activate
 
-                python3 -m pip install --upgrade pip --break-system-packages
-                python3 -m pip install --break-system-packages -r requirements.txt
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
 
-                python3 data_preprocessing.py
-                '''
-            }
-        }
+        python data_preprocessing.py
+        '''
+    }
+}
 
         stage('Train Model') {
-            steps {
-                sh '''
-                . venv/bin/activate || true
-                python3 flight_model_training.py
-                '''
-            }
-        }
+    steps {
+        sh '''
+        . venv/bin/activate
+        python flight_model_training.py
+        '''
+    }
+}
 
         stage('Build Docker Image') {
             steps {
