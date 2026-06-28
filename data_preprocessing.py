@@ -15,11 +15,9 @@ import pandas as pd
 import os
 
 # Load Dataset
-from google.colab import drive
-drive.mount('/content/drive')
 
 # Change the filename if needed
-df = pd.read_csv("/content/drive/MyDrive/AlmaBetter masters assesment/ML Engineering/Module 1 ML Engineering/flights.csv", encoding='latin1')
+df = pd.read_csv("data.csv")
 
 print("\nFirst 5 rows:")
 print(df.head())
