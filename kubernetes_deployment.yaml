@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-price-predictor-deployment
+  labels:
+    app: flight-price-predictor
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flight-price-predictor
+
+  template:
+    metadata:
+      labels:
+        app: flight-price-predictor
+
+    spec:
+      containers:
+      - name: flight-price-predictor
+        image: flight-price-predictor:latest
+        ports:
+        - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flight-price-predictor-service
+
+spec:
+  selector:
+    app: flight-price-predictor
+
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+
+  type: LoadBalancer
