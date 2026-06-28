@@ -1,17 +1,12 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = 'your-docker-registry/flight-price-predictor'
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
-    }
-
     stages {
 
         stage('Checkout SCM') {
             steps {
-                echo 'Checking out SCM...'
-                git branch: 'main', url: 'https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git'
+                git branch: 'main',
+                    url: 'https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git'
             }
         }
 
@@ -20,8 +15,10 @@ pipeline {
                 sh '''
                 python3 -m venv venv
                 . venv/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
+
+                python -m pip install --upgrade pip
+                python -m pip install -r requirements.txt
+
                 python data_preprocessing.py
                 '''
             }
@@ -35,42 +32,14 @@ pipeline {
                 '''
             }
         }
+    }
 
-        stage('Build Docker Image') {
-            steps {
-                sh """
-                docker build -f Dockerfile.flight_price_api \
-                -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
-                """
-            }
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
         }
-
-        stage('Push Docker Image') {
-            steps {
-                sh """
-                docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest
-                docker push ${DOCKER_IMAGE}:latest
-                """
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh """
-                kubectl set image deployment/flight-price-predictor-deployment \
-                flight-price-predictor=${DOCKER_IMAGE}:${IMAGE_TAG}
-
-                kubectl rollout status deployment/flight-price-predictor-deployment
-                """
-            }
-        }
-
-        stage('Post-Deployment Tests') {
-            steps {
-                echo 'Deployment completed successfully!'
-            }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
-
