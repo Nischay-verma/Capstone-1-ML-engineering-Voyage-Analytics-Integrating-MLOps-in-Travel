@@ -10,19 +10,21 @@ pipeline {
 
         stage('Checkout SCM') {
             steps {
-                echo 'Checking out SCM...'
-                git branch: 'main', url: 'https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git'
+                git branch: 'main',
+                    url: 'https://github.com/Nischay-verma/Capstone-1-ML-engineering-Voyage-Analytics-Integrating-MLOps-in-Travel.git'
             }
         }
 
         stage('Install Dependencies & Preprocess Data') {
             steps {
                 sh '''
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
-                python data_preprocessing.py
+                python3 -m venv venv || true
+                . venv/bin/activate || true
+
+                python3 -m pip install --upgrade pip --break-system-packages
+                python3 -m pip install --break-system-packages -r requirements.txt
+
+                python3 data_preprocessing.py
                 '''
             }
         }
@@ -30,8 +32,8 @@ pipeline {
         stage('Train Model') {
             steps {
                 sh '''
-                . venv/bin/activate
-                python flight_model_training.py
+                . venv/bin/activate || true
+                python3 flight_model_training.py
                 '''
             }
         }
